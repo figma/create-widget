@@ -1,0 +1,20 @@
+.git
+
+# Node
+*.log
+*.log.*
+node_modules
+
+# JetBrains IDE
+.idea
+scopes
+
+# Sublime IDE
+*.sublime-project
+*.sublime-workspace
+
+# vscode IDE
+.vscode
+
+# OSX
+.DS_Store
