@@ -14,7 +14,7 @@ function Widget() {
       spacing={12}
     >
       <Text fontSize={32} horizontalAlignText="center">
-        Hello Widget!
+        Hello Widget
       </Text>
     </AutoLayout>
   )
