@@ -2,10 +2,10 @@
   "name": "WidgetTemplate",
   "id": "10074075004744806088",
   "api": "1.0.0",
-  "widgetApi": "1.0.0",
   "editorType": ["figjam"],
-  "permissions": ["currentuser"],
+  "permissions": [],
   "containsWidget": true,
   "main": "dist/code.js",
-  "ui": "dist/index.html"
+  "ui": "dist/index.html",
+  "widgetApi": "1.0.0"
 }

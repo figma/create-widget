@@ -1,70 +1,70 @@
-#!/usr/bin/env node
-
 import fs from 'fs-extra'
 import path from 'path'
 import cp from 'child_process'
 
 import { fileURLToPath } from 'url'
-
+import inquirer from 'inquirer'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 async function installDependenciesAsync(cwd) {
   await new (function (resolve, reject) {
-    const command = 'npm ci'
+    const command = 'npm install && npm ci && npm run build'
     cp.exec(command, { cwd }, function (error) {
       if (error) {
         reject(error)
         return
       }
       path.resolve()
+      console.log('Done')
     })
   })
 }
 
 async function copyTemplateAsync(
-  templateName,
-  pluginDirectoryPath
+  pluginDirectoryPath,
+  shouldAddUI
 ) {
+  const templateName = shouldAddUI ? 'widget-with-ui' : 'widget-without-ui'
   const templateDirectory = path.resolve(
     __dirname,
     '..',
     'node_modules',
     'create-widget-test',
+    'templates',
     templateName
   )
   await fs.copy(templateDirectory, pluginDirectoryPath)
-  const npmIgnoreFile = path.join(pluginDirectoryPath, '.npmignore')
-  if ((await fs.pathExists(npmIgnoreFile)) === true) {
-    // When running via npm/npx, the .gitignore file is renamed to .npmignore,
-    // so we need to rename it back
-    const gitIgnoreFile = path.join(pluginDirectoryPath, '.gitignore')
-    await fs.move(npmIgnoreFile, gitIgnoreFile)
-  }
 }
 
 
-async function createWidgetAsync(destinationPath) {
+export async function createWidgetAsync(input) {
   try {
-    console.log("Creating widget async")
-    const templateName = 'widget-template'
+    const result = await inquirer.prompt([
+      {
+        choices: ["Y", "N"],
+        message: 'Are you planning to build a widget with UI?',
+        name: 'widgetHasUI',
+        type: 'list'
+      }
+    ])
+    const shouldAddUI = result.widgetHasUI === 'Y'
+    const shouldAddUIText = shouldAddUI ? 'with ui' : 'without ui'
+
+    console.log(`Creating widget ${shouldAddUIText}...`)
+    const destinationPath = input.options.name ? input.options.name : 'widget-template'
     let directoryPath = path.join(process.cwd(), destinationPath)
     let actualDestinationPath
     while ((await fs.pathExists(directoryPath)) === true) {
       throw new Error(`${destinationPath} already exists. Please choose a different destination folder name.`)
     }
-    console.log(`Copying "${templateName}" template into "${destinationPath}"...`)
-    await copyTemplateAsync(templateName, directoryPath)
+
+    console.log(`Copying template ${shouldAddUIText} into "${destinationPath}"...`)
+    await copyTemplateAsync(directoryPath, shouldAddUI)
     console.log('Installing dependencies...')
     await installDependenciesAsync(directoryPath)
-    console.log('Done')
   } catch (error) {
     console.log(error.message)
     process.exit(1)
   }
 }
-
-if (process.argv[2] === undefined) {
-  throw new Error("Please specify a destination folder name.")
-}
-createWidgetAsync(process.argv[2])

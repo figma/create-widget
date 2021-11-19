@@ -12,22 +12,9 @@ function Widget() {
       fill="#FFFFFF"
       cornerRadius={8}
       spacing={12}
-      onClick={async () => {
-        await new Promise((resolve) => {
-          figma.showUI(__html__)
-          figma.ui.on('message', (msg) => {
-            if (msg === 'hello') {
-              figma.notify(`Hello ${figma.currentUser.name}`)
-            }
-            if (msg === 'close') {
-              figma.closePlugin()
-            }
-          })
-        })
-      }}
     >
       <Text fontSize={32} horizontalAlignText="center">
-        Click Me
+        Hello Widget!
       </Text>
     </AutoLayout>
   )
