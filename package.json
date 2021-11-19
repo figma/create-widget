@@ -1,7 +1,7 @@
 {
-  "name": "create-widget-test",
-  "repository": "git@github.com:cjxh/create-widget-test.git",
-  "version": "1.0.35",
+  "name": "create-widget",
+  "repository": "git@github.com:figma/create-widget.git",
+  "version": "1.0.0",
   "description": "WidgetTemplate",
   "type": "module",
   "bin": {

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import sade from 'sade'
 
-import { createWidgetAsync } from './create-widget-app.js'
+import { createWidgetAsync } from './create-widget.js'
 
 sade('create-widget', true)
   .describe('Create a new widget')
