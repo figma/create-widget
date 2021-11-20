@@ -3,7 +3,7 @@
   "id": "10074075004744806088",
   "api": "1.0.0",
   "editorType": ["figjam"],
-  "permissions": [],
+  "permissions": [{{{permissions}}}],
   "containsWidget": true,
   "main": "dist/code.js",
   "widgetApi": "1.0.0"

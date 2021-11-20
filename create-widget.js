@@ -116,17 +116,32 @@ Press ^C at any time to quit.`)
         message: 'Are you building a widget with an iFrame?',
         name: 'shouldAddIframe',
         type: 'list'
+      },
+      {
+        choices: ["Y", "N"],
+        message: 'Are you building a widget with a property menu?',
+        name: 'shouldAddPropertyMenu',
+        type: 'list'
+      },
+      {
+        choices: ["activeusers", "currentuser"],
+        message: 'Are you building a widget that needs the following permissions? (empty for none)',
+        name: 'permissions',
+        type: 'checkbox'
       }
     ])
     const shouldAddUI = result.shouldAddIframe === 'Y'
     const shouldAddUIText = shouldAddUI ? 'with ui' : 'without ui'
+
+    const permissions = result.permissions
+    const parsedPermissions = permissions.map(p => `"${p}"`).join(',')
 
     console.log()
     console.log(`Creating widget ${shouldAddUIText}...`)
     console.log(`Copying template into "${destinationPath}"...`)
 
     await copyTemplateFiles(directoryPath, shouldAddUI)
-    await replaceTemplatizedValues(directoryPath, { widgetName })
+    await replaceTemplatizedValues(directoryPath, { widgetName, permissions: parsedPermissions })
 
     console.log('Installing dependencies...')
     await installDependencies(directoryPath, destinationPath)
