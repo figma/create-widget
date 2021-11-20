@@ -2,10 +2,10 @@
   "name": "create-widget",
   "repository": "git@github.com:figma/create-widget.git",
   "version": "1.0.0",
-  "description": "WidgetTemplate",
+  "description": "Create a widget from figma widget templates",
   "type": "module",
   "bin": {
-    "create-widget-test": "./cli.js"
+    "create-widget": "./cli.js"
   },
   "author": "Figma",
   "license": "MIT License",
@@ -14,6 +14,9 @@
     "package-json": "^7.0.0",
     "url": "^0.11.0",
     "inquirer": "^8.2.0",
-    "sade": "^1.7.4"
+    "sade": "^1.7.4",
+    "globby": "^12.0.2",
+    "is-utf8": "^0.2.1",
+    "mustache": "^4.2.0"
   }
 }

@@ -4,10 +4,34 @@ import cp from 'child_process'
 
 import { fileURLToPath } from 'url'
 import inquirer from 'inquirer'
+import { globby } from 'globby'
+import isUtf8 from 'is-utf8'
+import mustache from 'mustache'
+
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
-async function installDependenciesAsync(cwd) {
+export async function replaceTemplatizedValues(
+  directory,
+  values
+) {
+  const filePaths = await globby('**/*', {
+    cwd: directory,
+    dot: true
+  })
+  await Promise.all(
+    filePaths.map(async function (filePath) {
+      const absolutePath = path.join(directory, filePath)
+      const buffer = await fs.readFile(absolutePath)
+      const fileContents = isUtf8(buffer)
+        ? mustache.render(buffer.toString(), values)
+        : buffer
+      await fs.outputFile(absolutePath, fileContents)
+    })
+  )
+}
+
+async function installDependencies(cwd) {
   await new (function (resolve, reject) {
     const command = 'npm install && npm ci && npm run build'
     cp.exec(command, { cwd }, function (error) {
@@ -21,7 +45,7 @@ async function installDependenciesAsync(cwd) {
   })
 }
 
-async function copyTemplateAsync(
+async function copyTemplateFiles(
   pluginDirectoryPath,
   shouldAddUI
 ) {
@@ -38,7 +62,7 @@ async function copyTemplateAsync(
 }
 
 
-export async function createWidgetAsync(input) {
+export async function createWidget(input) {
   try {
     const result = await inquirer.prompt([
       {
@@ -52,17 +76,20 @@ export async function createWidgetAsync(input) {
     const shouldAddUIText = shouldAddUI ? 'with ui' : 'without ui'
 
     console.log(`Creating widget ${shouldAddUIText}...`)
-    const destinationPath = input.options.name ? input.options.name : 'widget-template'
+    const destinationPath = input.options.path ? input.options.path : 'my-custom-widget'
     let directoryPath = path.join(process.cwd(), destinationPath)
-    let actualDestinationPath
     while ((await fs.pathExists(directoryPath)) === true) {
       throw new Error(`${destinationPath} already exists. Please choose a different destination folder name.`)
     }
 
-    console.log(`Copying template ${shouldAddUIText} into "${destinationPath}"...`)
-    await copyTemplateAsync(directoryPath, shouldAddUI)
+    console.log(`Copying template into "${destinationPath}"...`)
+
+    await copyTemplateFiles(directoryPath, shouldAddUI)
+    const widgetName = input.options.name ? input.options.name : 'MyCustomWidget'
+    await replaceTemplatizedValues(directoryPath, { widgetName })
+
     console.log('Installing dependencies...')
-    await installDependenciesAsync(directoryPath)
+    await installDependencies(directoryPath)
   } catch (error) {
     console.log(error.message)
     process.exit(1)

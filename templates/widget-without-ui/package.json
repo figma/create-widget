@@ -1,7 +1,7 @@
 {
-  "name": "WidgetTemplate",
+  "name": "{{widgetName}}",
   "version": "1.0.0",
-  "description": "WidgetTemplate",
+  "description": "{{widgetName}}",
   "scripts": {
     "test": "npm run tsc && npm run build",
     "format": "prettier --write .",

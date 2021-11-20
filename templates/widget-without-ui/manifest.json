@@ -1,5 +1,5 @@
 {
-  "name": "WidgetTemplate",
+  "name": "{{widgetName}}",
   "id": "10074075004744806088",
   "api": "1.0.0",
   "editorType": ["figjam"],
