@@ -1,5 +1,5 @@
 const { widget } = figma
-const { AutoLayout, Text } = widget
+const { AutoLayout, Ellipse, Frame, Image, Rectangle, SVG, Text } = widget
 
 function Widget() {
   return (

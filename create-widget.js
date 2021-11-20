@@ -31,16 +31,23 @@ export async function replaceTemplatizedValues(
   )
 }
 
-async function installDependencies(cwd) {
+async function installDependencies(cwd, destinationPath) {
   await new (function (resolve, reject) {
-    const command = 'npm install && npm ci && npm run build'
+    const command = 'npm install'
     cp.exec(command, { cwd }, function (error) {
       if (error) {
         reject(error)
         return
       }
       path.resolve()
-      console.log('Done')
+
+      console.log()
+      console.log(`
+Done. Now run:
+
+  cd ${destinationPath}
+  npm run build
+`)
     })
   })
 }
@@ -54,7 +61,7 @@ async function copyTemplateFiles(
     __dirname,
     '..',
     'node_modules',
-    'create-widget-test',
+    'create-widget',
     'templates',
     templateName
   )
@@ -64,11 +71,22 @@ async function copyTemplateFiles(
 
 export async function createWidget(input) {
   try {
+    console.log(`This tool will create a widget using a Figma widget template.
+It only covers some of the most common usages and defaults.
+
+See our guide: https://www.figma.com/widget-docs/intro/
+for more details on how to handle user events, iframes, add a property menu, etc; as well as what each of these files do.
+
+See our API reference docs: https://www.figma.com/widget-docs/api/api-reference/
+to reference definitive documentation on our API and exactly what each field does.
+
+Press ^C at any time to quit.`)
+    console.log()
     let destinationPath = input.options.path
     if (destinationPath === undefined) {
       const result = await inquirer.prompt([
         {
-          message: 'Enter the destination path for your widget: (empty defaults to "my-custom-widget")',
+          message: 'Enter the folder name for your widget: (empty defaults to "my-custom-widget")',
           name: 'destinationPath',
           type: 'input'
         }
@@ -80,13 +98,11 @@ export async function createWidget(input) {
       throw new Error(`${destinationPath} already exists. Please choose a different destination folder name.`)
     }
 
-
-
     let widgetName = input.options.name
     if (widgetName === undefined) {
       const result = await inquirer.prompt([
         {
-          message: 'Enter the name for your widget: (empty defaults to "MyCustomWidget")',
+          message: 'Enter the name of your widget: (empty defaults to "MyCustomWidget")',
           name: 'widgetName',
           type: 'input'
         }
@@ -105,15 +121,15 @@ export async function createWidget(input) {
     const shouldAddUI = result.shouldAddIframe === 'Y'
     const shouldAddUIText = shouldAddUI ? 'with ui' : 'without ui'
 
+    console.log()
     console.log(`Creating widget ${shouldAddUIText}...`)
-
     console.log(`Copying template into "${destinationPath}"...`)
 
     await copyTemplateFiles(directoryPath, shouldAddUI)
     await replaceTemplatizedValues(directoryPath, { widgetName })
 
-    console.log('Installing dependencies: npm install && npm ci && npm run build')
-    await installDependencies(directoryPath)
+    console.log('Installing dependencies...')
+    await installDependencies(directoryPath, destinationPath)
   } catch (error) {
     console.log(error.message)
     process.exit(1)

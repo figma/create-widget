@@ -1,5 +1,5 @@
 const { widget } = figma
-const { AutoLayout, Text } = widget
+const { AutoLayout, Ellipse, Frame, Image, Rectangle, SVG, Text } = widget
 
 function Widget() {
   return (
@@ -14,7 +14,7 @@ function Widget() {
       spacing={12}
     >
       <Text fontSize={32} horizontalAlignText="center">
-        Hello Widget
+        Hello Widget!
       </Text>
     </AutoLayout>
   )
