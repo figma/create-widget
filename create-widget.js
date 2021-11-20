@@ -64,31 +64,55 @@ async function copyTemplateFiles(
 
 export async function createWidget(input) {
   try {
-    const result = await inquirer.prompt([
-      {
-        choices: ["Y", "N"],
-        message: 'Are you planning to build a widget with UI?',
-        name: 'widgetHasUI',
-        type: 'list'
-      }
-    ])
-    const shouldAddUI = result.widgetHasUI === 'Y'
-    const shouldAddUIText = shouldAddUI ? 'with ui' : 'without ui'
-
-    console.log(`Creating widget ${shouldAddUIText}...`)
-    const destinationPath = input.options.path ? input.options.path : 'my-custom-widget'
+    let destinationPath = input.options.path
+    if (destinationPath === undefined) {
+      const result = await inquirer.prompt([
+        {
+          message: 'Enter the destination path for your widget: (empty defaults to "my-custom-widget")',
+          name: 'destinationPath',
+          type: 'input'
+        }
+      ])
+      destinationPath = result.destinationPath ? result.destinationPath : 'my-custom-widget'
+    }
     let directoryPath = path.join(process.cwd(), destinationPath)
     while ((await fs.pathExists(directoryPath)) === true) {
       throw new Error(`${destinationPath} already exists. Please choose a different destination folder name.`)
     }
 
+
+
+    let widgetName = input.options.name
+    if (widgetName === undefined) {
+      const result = await inquirer.prompt([
+        {
+          message: 'Enter the name for your widget: (empty defaults to "MyCustomWidget")',
+          name: 'widgetName',
+          type: 'input'
+        }
+      ])
+      widgetName = result.widgetName ? result.widgetName : 'MyCustomWidget'
+    }
+
+    const result = await inquirer.prompt([
+      {
+        choices: ["Y", "N"],
+        message: 'Are you building a widget with an iFrame?',
+        name: 'shouldAddIframe',
+        type: 'list'
+      }
+    ])
+    const shouldAddUI = result.shouldAddIframe === 'Y'
+    const shouldAddUIText = shouldAddUI ? 'with ui' : 'without ui'
+
+    console.log(`Creating widget ${shouldAddUIText}...`)
+
     console.log(`Copying template into "${destinationPath}"...`)
 
     await copyTemplateFiles(directoryPath, shouldAddUI)
-    const widgetName = input.options.name ? input.options.name : 'MyCustomWidget'
     await replaceTemplatizedValues(directoryPath, { widgetName })
 
-    console.log('Installing dependencies...')
+    console.log('Installing dependencies: npm install && npm ci && npm run build')
     await installDependencies(directoryPath)
   } catch (error) {
     console.log(error.message)
