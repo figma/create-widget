@@ -133,6 +133,23 @@ Press ^C at any time to quit.`)
     const shouldAddUI = result.shouldAddIframe === 'Y'
     const shouldAddUIText = shouldAddUI ? 'with ui' : 'without ui'
 
+    const shouldAddPropertyMenu = result.shouldAddPropertyMenu === 'Y'
+    const propertyMenuCode = shouldAddPropertyMenu ? `
+  const propertyMenu: WidgetPropertyMenuItem[] = [
+    {
+      tooltip: 'Click me',
+      propertyName: 'click',
+      itemType: 'action',
+    },
+  ]
+  usePropertyMenu(propertyMenu, ({ propertyName }) => {
+    if (propertyName === 'click') {
+      figma.notify('You clicked on the property menu!')
+    }
+  })
+    ` : ''
+    const importUsePropertyMenu = shouldAddPropertyMenu ? ', usePropertyMenu' : ''
+
     const permissions = result.permissions
     const parsedPermissions = permissions.map(p => `"${p}"`).join(',')
 
@@ -141,7 +158,7 @@ Press ^C at any time to quit.`)
     console.log(`Copying template into "${destinationPath}"...`)
 
     await copyTemplateFiles(directoryPath, shouldAddUI)
-    await replaceTemplatizedValues(directoryPath, { widgetName, permissions: parsedPermissions })
+    await replaceTemplatizedValues(directoryPath, { widgetName, permissions: parsedPermissions, propertyMenuCode, importUsePropertyMenu })
 
     console.log('Installing dependencies...')
     await installDependencies(directoryPath, destinationPath)
