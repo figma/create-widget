@@ -1,0 +1,11 @@
+{
+  "name": "{{widgetName}}",
+  "id": "10074075004744806088",
+  "api": "1.0.0",
+  "editorType": ["figjam"],
+  "permissions": [{{{permissions}}}],
+  "containsWidget": true,
+  "main": "dist/code.js",
+  "ui": "dist/index.html",
+  "widgetApi": "1.0.0"
+}
