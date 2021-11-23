@@ -1,7 +1,7 @@
 {
   "name": "@figma/create-widget",
   "repository": "git@github.com:figma/create-widget.git",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Create a widget from figma widget templates",
   "type": "module",
   "bin": {
