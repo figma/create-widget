@@ -1,6 +1,7 @@
 # create-widget
 
-:construction: This package is currently under development :construction:
+:construction: **This package is currently under development** :construction:
+
 It contains templates used to create FigJam widgets.
 
 ## Usage
