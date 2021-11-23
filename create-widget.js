@@ -60,7 +60,6 @@ async function copyTemplateFiles(
   const templateDirectory = path.resolve(
     __dirname,
     '..',
-    'node_modules',
     'create-widget',
     'templates',
     templateName
