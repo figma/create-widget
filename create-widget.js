@@ -10,6 +10,14 @@ import mustache from "mustache";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+const INITIAL_PROMPT = `This tool will create a FigJam widget project using a template that serves as a starting point for building your widget.
+
+See the generated README.md for more information on how to use this template and get started building your widget.
+
+You can find the API reference for widgets here: https://www.figma.com/widget-docs/api/api-reference/
+
+Press ^C at any time to quit.\n`
+
 function makeid(length) {
   var result = "";
   var characters =
@@ -87,14 +95,7 @@ async function copyTemplateFiles(pluginDirectoryPath, shouldAddUI) {
 
 export async function createWidget(input) {
   try {
-    console.log(`This tool will create a FigJam widget using a template.
-It aims to provide an extensible starting point with sensible defaults for building your widget.
-
-See the generated README.md for more information for how to use this template and get started building your widget.
-
-You can find API reference for widgets here: https://www.figma.com/widget-docs/api/api-reference/
-
-Press ^C at any time to quit.\n`);
+    console.log(INITIAL_PROMPT);
     let widgetName = input.options.name;
     if (widgetName === undefined) {
       const result = await inquirer.prompt([
