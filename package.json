@@ -10,7 +10,8 @@
   "scripts": {
     "test": "rm -rf test/ && mkdir -p test && cd test && node ../cli.js",
     "test:with-name": "npm run test -- -n Counter",
-    "test:all-flags": "npm run test -- -n Counter -p counter-widget --iframe=Y"
+    "test:with-ui": "npm run test -- -n CounterWithUI -p counter-with-ui-widget --iframe=Y",
+    "test:without-ui": "npm run test -- -n CounterNoUI -p counter-no-ui-widget --iframe=N"
   },
   "author": "Figma",
   "license": "MIT License",

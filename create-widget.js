@@ -83,7 +83,6 @@ async function copyTemplateFiles(
 
 
 export async function createWidget(input) {
-  console.log(input)
   try {
     console.log(`This tool will create a FigJam widget using a template.
 It aims to provide an extensible starting point with sensible defaults for building your widget.
