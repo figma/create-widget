@@ -83,6 +83,7 @@ async function copyTemplateFiles(
 
 
 export async function createWidget(input) {
+  console.log(input)
   try {
     console.log(`This tool will create a FigJam widget using a template.
 It aims to provide an extensible starting point with sensible defaults for building your widget.
@@ -104,7 +105,7 @@ Press ^C at any time to quit.\n`)
       widgetName = result.widgetName ? result.widgetName : 'Widget'
     }
 
-    let destinationPath = input.options.path
+    let destinationPath = input.options['package-name']
     if (destinationPath === undefined) {
       const defaultDestinationPath = `${widgetName.toLowerCase()}-widget`
       const result = await inquirer.prompt([
@@ -122,24 +123,29 @@ Press ^C at any time to quit.\n`)
       throw new Error(`${destinationPath} already exists. Please choose a different destination folder name.`)
     }
 
-
-    const result = await inquirer.prompt([
-      {
-        choices: ["Y", "N"],
-        message: 'Are you building a widget with an iframe?',
-        name: 'shouldAddIframe',
-        type: 'list'
-      }
-    ])
-    const shouldAddUI = result.shouldAddIframe === 'Y'
-    const shouldAddUIText = shouldAddUI ? 'with ui' : 'without ui'
+    let shouldAddUI = input.options.iframe
+    if (shouldAddUI === undefined) {
+      const result = await inquirer.prompt([
+        {
+          choices: ["Y", "N"],
+          message: 'Are you building a widget with an iframe?',
+          name: 'shouldAddIframe',
+          type: 'list'
+        }
+      ])
+      shouldAddUI = result.shouldAddIframe === 'Y'
+    }
 
     console.log(``)
-    console.log(`Creating widget ${shouldAddUIText}...`)
+    console.log(`Creating widget ${shouldAddUI ? 'with ui' : 'without ui'}...`)
     console.log(`Copying template into "${destinationPath}"...`)
 
     await copyTemplateFiles(directoryPath, shouldAddUI)
-    await replaceTemplatizedValues(directoryPath, { widgetName, widgetId: randomWidgetId() })
+    await replaceTemplatizedValues(directoryPath, {
+      widgetName,
+      widgetId: randomWidgetId(),
+      packageName: widgetName.toLowerCase()
+    })
 
     console.log('Installing dependencies...')
     await installDependencies(directoryPath, destinationPath)

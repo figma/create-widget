@@ -9,13 +9,14 @@ const description = `
   Examples
     $ npm init @figma/widget
     $ npm init @figma/widget -n Counter
-    $ npm init @figma/widget -n Counter -p counter-widget
+    $ npm init @figma/widget -n Counter -p counter-widget --iframe=Y
 `
 
 sade('create-widget', true)
   .describe(description)
   .option('-n, --name', 'Name of your widget; defaults to "Widget"')
-  .option('-p, --folder-name', 'Name of the folder containing your widget; defaults to "<name>-widget"')
+  .option('-p, --package-name', 'Name of the folder containing your widget; defaults to "<name>-widget"')
+  .option('-i, --iframe', 'Whether the widget uses an iframe')
   .action(async function (options) {
     await createWidget({ options })
   })

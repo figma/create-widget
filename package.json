@@ -8,7 +8,9 @@
     "create-widget": "./cli.js"
   },
   "scripts": {
-    "test": "rm -rf test/ && mkdir -p test && cd test && node ../cli.js -n Counter"
+    "test": "rm -rf test/ && mkdir -p test && cd test && node ../cli.js",
+    "test:with-name": "npm run test -- -n Counter",
+    "test:all-flags": "npm run test -- -n Counter -p counter-widget --iframe=Y"
   },
   "author": "Figma",
   "license": "MIT License",
