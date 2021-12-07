@@ -18,3 +18,6 @@ scopes
 
 # OSX
 .DS_Store
+
+test/
+templates/*/package-lock.json

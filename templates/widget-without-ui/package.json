@@ -1,16 +1,14 @@
 {
-  "name": "{{widgetName}}",
+  "name": "{{packageName}}",
   "version": "1.0.0",
   "description": "{{widgetName}}",
   "scripts": {
     "test": "npm run tsc && npm run build",
     "format": "prettier --write .",
-    "tsc": "tsc --noEmit -p src",
-    "tsc:watch": "concurrently -n widget \"npm run tsc -- --watch --preserveWatchOutput\"",
-    "build": "esbuild src/code.tsx --bundle --outfile=dist/code.js",
-    "build:production": "npm run build -- --minify",
-    "build:watch": "concurrently -n widget \"npm run build -- --watch\"",
-    "dev": "concurrently -n tsc,build 'npm:tsc:watch' 'npm:build:watch'"
+    "tsc": "tsc --noEmit -p widget-src",
+    "build": "npm run bundle -- --minify",
+    "bundle": "esbuild widget-src/code.tsx --bundle --outfile=dist/code.js",
+    "dev": "concurrently -n tsc,build 'npm run tsc -- --preserveWatchOutput --watch' 'npm run bundle -- --watch'"
   },
   "author": "Figma",
   "license": "MIT License",
