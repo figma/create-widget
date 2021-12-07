@@ -3,15 +3,20 @@ import sade from 'sade'
 
 import { createWidget } from './create-widget.js'
 
+const description = `
+    Create a FigJam widget with a single command
+
+  Examples
+    $ npm init @figma/widget
+    $ npm init @figma/widget -n Counter
+    $ npm init @figma/widget -n Counter -p counter-widget
+`
+
 sade('create-widget', true)
-  .describe('Create a new widget')
-  .option('-p, --path', 'Destination path of your widget; defaults to my-custom-widget')
-  .option('-n, --name', 'Name of your widget; defaults to MyCustomWidget')
-  .action(async function (
-    options,
-  ) {
-    await createWidget({
-      options,
-    })
+  .describe(description)
+  .option('-n, --name', 'Name of your widget; defaults to "Widget"')
+  .option('-p, --folder-name', 'Name of the folder containing your widget; defaults to "<name>-widget"')
+  .action(async function (options) {
+    await createWidget({ options })
   })
   .parse(process.argv)
