@@ -42,7 +42,7 @@ export async function replaceTemplatizedValues(directory, values) {
   );
 }
 
-async function installDependencies(cwd, destinationPath) {
+async function installDependencies(cwd, widgetname, destinationPath) {
   await new (function (resolve, reject) {
     const command = "npm install";
     cp.exec(command, { cwd }, function (error) {
@@ -54,10 +54,20 @@ async function installDependencies(cwd, destinationPath) {
 
       console.log();
       console.log(`
-Your widget has been created! Run the following commands to get started building:
+Your widget has been created!
+
+
+Run the following commands to get started building your widget:
 
   cd ${destinationPath}
   npm run dev
+
+
+Import your widget into FigJam to start testing it:
+
+1. Open a FigJam file using the Figma Desktop app to import your widget. 
+2. Right click > Widgets > Development > Import widget from manifest… and import the manifest.json file in your widget directory.
+3. Insert your your widget: "Right click > Widgets > Development > ${widgetname}"
 `);
     });
   })();
@@ -145,7 +155,7 @@ Press ^C at any time to quit.\n`);
     });
 
     console.log("Installing dependencies...");
-    await installDependencies(directoryPath, destinationPath);
+    await installDependencies(directoryPath, widgetName, destinationPath);
   } catch (error) {
     console.log(error.message);
     process.exit(1);
