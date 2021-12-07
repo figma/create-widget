@@ -1,55 +1,46 @@
-# create-widget-app
+# @figma/create-widget
 
-Template app that creates a widget & react iframe.
-
-Code organization:
-
-| dir / path               | description                          |
-| ------------------------ | ------------------------------------ |
-| ui-src/                  | This is where the iframe code lives  |
-| ui-src/index.html        | Main entry point for the iframe code |
-| ui-src/tsconfig.json     | tsconfig for the iframe code         |
-| widget-src/              | This is where the widget code lives  |
-| widget-src/code.tsx      | Main entry point for the widget code |
-| widget-src/tsconfig.json | tsconfig for the widget code         |
-| dist/                    | Built output goes here               |
-
-- The widget code just uses esbuild to bundle widget-src/code.tsx into one file.
-- The iframe code uses a tool called [vite](https://vitejs.dev/) to bundle everything into a single html file
+This repo was created by @figma/create-widget
 
 ## Getting started
 
-### One-time setup
-1. Make a copy of this folder
-2. Update manifest.json, package.json and package-lock.json where it says `WidgetTemplate`
-3. Install the required dependencies `npm ci`
+Run the following command to start building your widget
 
-
-### Importing your widget
-1. "Import widget from manifest"
-2. Build code `npm run build`
-3. Choose your manifest
-
-
-## Development
-
-The quickest way to build your widget during development is by running:
-
-```sh
+```bash
 npm run dev
 ```
 
-This command starts the follow in watch mode:
-1. typechecking for widget-src & ui-src
-2. bundling for widget-src & ui-src
-3. starts a vite dev server that servesr ui-src/index.html at localhost:3000
+1. Log in to your account and open the Figma desktop app
+2. You can open any existing FigJam document or create a new one.
+3. Go to Menu > Widgets > Development > "Import widget from manifest..."
+4. Select the manifest.json in this folder
 
-## Other scripts
+## Organization
 
-| script                   | description                                                             |
-| ------------------------ | ----------------------------------------------------------------------- |
-| npm run build            | one-off full build of both the iframe and widget                        |
-| npm run build:production | one-off full production (minified) build of both the iframe and widget  |
-| npm run build:main       | one-off build of the widget code                                        |
-| npm run build:ui         | one-off build of the iframe code                                        |
-| npm run tsc              | typecheck both the iframe and widget                                    |
+This widget uses:
+- [esbuild](https://esbuild.github.io/) for bundling
+- [vite](https://vitejs.dev/) and [react](https://reactjs.org/) for the iframe
+- [typescript](https://www.typescriptlang.org/) for typechecking
+
+| file/folder   | description                                                                      |
+| ------------- | -------------------------------------------------------------------------------- |
+| manifest.json | The widget's [manifest.json](https://www.figma.com/widget-docs/widget-manifest/) |
+| widget-src/   | Contains the widget code                                                         |
+| ui-src/       | Contains the iframe code                                                         |
+
+
+### `npm run dev`
+
+This is the only command you need to run in development. It will start the following processes for you:
+
+- bundling (both widget and iframe code)
+- typechecking (both widget and iframe code)
+- vite dev server (for iframe development)
+
+### `npm run build`
+
+This runs bundling with minification turned on. You should run this command before releasing your widget.
+
+### `npm run test`
+
+This runs typechecking and makes sure that your widget builds without errors.

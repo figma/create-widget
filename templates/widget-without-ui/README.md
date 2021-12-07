@@ -1,48 +1,43 @@
-# create-widget-app
+# @figma/create-widget
 
-Template app that creates a widget.
+This repo was created by @figma/create-widget
 
-Code organization:
+## Getting started with widget development
 
-| dir / path               | description                          |
-| ------------------------ | ------------------------------------ |
-| widget-src/              | This is where the widget code lives  |
-| widget-src/code.tsx      | Main entry point for the widget code |
-| widget-src/tsconfig.json | tsconfig for the widget code         |
-| dist/                    | Built output goes here               |
+Run the following command to start building your widget
 
-- The widget code just uses esbuild to bundle widget-src/code.tsx into one file.
-
-## Getting started
-
-### One-time setup
-1. Make a copy of this folder
-2. Update manifest.json, package.json and package-lock.json where it says `WidgetTemplate`
-3. Install the required dependencies `npm ci`
-
-
-### Importing your widget
-1. "Import widget from manifest"
-2. Build code `npm run build`
-3. Choose your manifest
-
-
-## Development
-
-The quickest way to build your widget during development is by running:
-
-```sh
+```bash
 npm run dev
 ```
 
-This command starts the follow in watch mode:
-1. typechecking for widget-src
-2. bundling for widget-src
+1. Log in to your account and open the Figma desktop app
+2. You can open any existing FigJam document or create a new one.
+3. Go to Menu > Widgets > Development > "Import widget from manifest..."
+4. Select the manifest.json in this folder
 
-## Other scripts
+## Organization
 
-| script                   | description                                                             |
-| ------------------------ | ----------------------------------------------------------------------- |
-| npm run build            | one-off full build of the widget code                                   |
-| npm run build:production | one-off full production (minified) build of the widget                  |
-| npm run tsc              | typecheck the widget                                                    |
+This widget uses:
+- [esbuild](https://esbuild.github.io/) for bundling
+- [typescript](https://www.typescriptlang.org/) for typechecking
+
+| file/folder   | description                                                                      |
+| ------------- | -------------------------------------------------------------------------------- |
+| manifest.json | The widget's [manifest.json](https://www.figma.com/widget-docs/widget-manifest/) |
+| widget-src/   | Contains the widget code                                                         |
+
+
+### `npm run dev`
+
+This is the only command you need to run in development. It will start the following processes for you:
+
+- bundling
+- typechecking
+
+### `npm run build`
+
+This runs bundling with minification turned on. You should run this command before releasing your widget.
+
+### `npm run test`
+
+This runs typechecking and makes sure that your widget builds without errors.
