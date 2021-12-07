@@ -18,6 +18,7 @@ npm run dev
 ## Organization
 
 This widget uses:
+
 - [esbuild](https://esbuild.github.io/) for bundling
 - [vite](https://vitejs.dev/) and [react](https://reactjs.org/) for the iframe
 - [typescript](https://www.typescriptlang.org/) for typechecking
@@ -27,7 +28,6 @@ This widget uses:
 | manifest.json | The widget's [manifest.json](https://www.figma.com/widget-docs/widget-manifest/) |
 | widget-src/   | Contains the widget code                                                         |
 | ui-src/       | Contains the iframe code                                                         |
-
 
 ### `npm run dev`
 

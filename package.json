@@ -8,6 +8,7 @@
     "create-widget": "./cli.js"
   },
   "scripts": {
+    "format": "prettier --write .",
     "test": "rm -rf test/ && mkdir -p test && cd test && node ../cli.js",
     "test:with-name": "npm run test -- -n Counter",
     "test:with-ui": "npm run test -- -n CounterWithUI -p counter-with-ui-widget --iframe=Y",
@@ -24,5 +25,8 @@
     "globby": "^12.0.2",
     "is-utf8": "^0.2.1",
     "mustache": "^4.2.0"
+  },
+  "devDependencies": {
+    "prettier": "^2.5.1"
   }
 }

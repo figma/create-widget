@@ -9,6 +9,7 @@ npm init @figma/widget
 ## Widget Organization
 
 The created widgets use:
+
 - [esbuild](https://esbuild.github.io/) for bundling
 - [vite](https://vitejs.dev/) and [react](https://reactjs.org/) if the iframe option is specified
 - [typescript](https://www.typescriptlang.org/) for typechecking
@@ -16,9 +17,8 @@ The created widgets use:
 | file/folder   | description                                                                      |
 | ------------- | -------------------------------------------------------------------------------- |
 | manifest.json | The widget's [manifest.json](https://www.figma.com/widget-docs/widget-manifest/) |
-| widget-src/   | Contains the widget code
-| ui-src/       | Contains the iframe code
-
+| widget-src/   | Contains the widget code                                                         |
+| ui-src/       | Contains the iframe code                                                         |
 
 ## Getting Started
 
