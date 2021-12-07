@@ -7,6 +7,9 @@
   "bin": {
     "create-widget": "./cli.js"
   },
+  "scripts": {
+    "test": "rm -rf test/ && mkdir -p test && cd test && node ../cli.js -n Counter"
+  },
   "author": "Figma",
   "license": "MIT License",
   "dependencies": {

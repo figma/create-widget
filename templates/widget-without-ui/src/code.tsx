@@ -1,9 +1,7 @@
 const { widget } = figma
-const { AutoLayout, Ellipse, Frame, Image, Rectangle, SVG, Text{{importUsePropertyMenu}} } = widget
+const { AutoLayout, Ellipse, Frame, Image, Rectangle, SVG, Text } = widget
 
 function Widget() {
-  {{{propertyMenuCode}}}
-
   return (
     <AutoLayout
       direction="horizontal"

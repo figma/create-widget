@@ -18,3 +18,5 @@ scopes
 
 # OSX
 .DS_Store
+
+test/

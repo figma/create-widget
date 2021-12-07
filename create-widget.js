@@ -11,6 +11,20 @@ import mustache from 'mustache'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
+function makeid(length) {
+  var result           = '';
+  var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  var charactersLength = characters.length;
+  for ( var i = 0; i < length; i++ ) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+ }
+ return result;
+}
+
+function randomWidgetId() {
+  return "widget-id-" + makeid(10)
+}
+
 export async function replaceTemplatizedValues(
   directory,
   values
@@ -43,10 +57,10 @@ async function installDependencies(cwd, destinationPath) {
 
       console.log()
       console.log(`
-Done. Now run:
+Your widget has been created! Run the following commands to get started building:
 
   cd ${destinationPath}
-  npm run build
+  npm run dev
 `)
     })
   })
@@ -70,94 +84,62 @@ async function copyTemplateFiles(
 
 export async function createWidget(input) {
   try {
-    console.log(`This tool will create a widget using a Figma widget template.
-It only covers some of the most common usages and defaults.
+    console.log(`This tool will create a FigJam widget using a template.
+It aims to provide an extensible starting point with sensible defaults for building your widget.
 
-See our guide: https://www.figma.com/widget-docs/intro/
-for more details on how to handle user events, iframes, add a property menu, etc; as well as what each of these files do.
+See the generated README.md for more information for how to use this template and get started building your widget.
 
-See our API reference docs: https://www.figma.com/widget-docs/api/api-reference/
-to reference definitive documentation on our API and exactly what each field does.
+You can find API reference for widgets here: https://www.figma.com/widget-docs/api/api-reference/
 
-Press ^C at any time to quit.`)
-    console.log()
-    let destinationPath = input.options.path
-    if (destinationPath === undefined) {
+Press ^C at any time to quit.\n`)
+    let widgetName = input.options.name
+    if (widgetName === undefined) {
       const result = await inquirer.prompt([
         {
-          message: 'Enter the folder name for your widget: (empty defaults to "my-custom-widget")',
+          message: 'Enter the name of your widget: (empty defaults to "Widget")',
+          name: 'widgetName',
+          type: 'input'
+        }
+      ])
+      widgetName = result.widgetName ? result.widgetName : 'Widget'
+    }
+
+    let destinationPath = input.options.path
+    if (destinationPath === undefined) {
+      const defaultDestinationPath = `${widgetName.toLowerCase()}-widget`
+      const result = await inquirer.prompt([
+        {
+          message: `Enter the folder name for your widget: (empty defaults to "${defaultDestinationPath}")`,
           name: 'destinationPath',
           type: 'input'
         }
       ])
-      destinationPath = result.destinationPath ? result.destinationPath : 'my-custom-widget'
+      destinationPath = result.destinationPath ? result.destinationPath : defaultDestinationPath
     }
+
     let directoryPath = path.join(process.cwd(), destinationPath)
     while ((await fs.pathExists(directoryPath)) === true) {
       throw new Error(`${destinationPath} already exists. Please choose a different destination folder name.`)
     }
 
-    let widgetName = input.options.name
-    if (widgetName === undefined) {
-      const result = await inquirer.prompt([
-        {
-          message: 'Enter the name of your widget: (empty defaults to "MyCustomWidget")',
-          name: 'widgetName',
-          type: 'input'
-        }
-      ])
-      widgetName = result.widgetName ? result.widgetName : 'MyCustomWidget'
-    }
 
     const result = await inquirer.prompt([
       {
         choices: ["Y", "N"],
-        message: 'Are you building a widget with an iFrame?',
+        message: 'Are you building a widget with an iframe?',
         name: 'shouldAddIframe',
         type: 'list'
-      },
-      {
-        choices: ["Y", "N"],
-        message: 'Are you building a widget with a property menu?',
-        name: 'shouldAddPropertyMenu',
-        type: 'list'
-      },
-      {
-        choices: ["activeusers", "currentuser"],
-        message: 'Are you building a widget that needs the following permissions? (empty for none)',
-        name: 'permissions',
-        type: 'checkbox'
       }
     ])
     const shouldAddUI = result.shouldAddIframe === 'Y'
     const shouldAddUIText = shouldAddUI ? 'with ui' : 'without ui'
 
-    const shouldAddPropertyMenu = result.shouldAddPropertyMenu === 'Y'
-    const propertyMenuCode = shouldAddPropertyMenu ? `
-  const propertyMenu: WidgetPropertyMenuItem[] = [
-    {
-      tooltip: 'Click me',
-      propertyName: 'click',
-      itemType: 'action',
-    },
-  ]
-  usePropertyMenu(propertyMenu, ({ propertyName }) => {
-    if (propertyName === 'click') {
-      figma.notify('You clicked on the property menu!')
-    }
-  })
-    ` : ''
-    const importUsePropertyMenu = shouldAddPropertyMenu ? ', usePropertyMenu' : ''
-
-    const permissions = result.permissions
-    const parsedPermissions = permissions.map(p => `"${p}"`).join(',')
-
-    console.log()
+    console.log(``)
     console.log(`Creating widget ${shouldAddUIText}...`)
     console.log(`Copying template into "${destinationPath}"...`)
 
     await copyTemplateFiles(directoryPath, shouldAddUI)
-    await replaceTemplatizedValues(directoryPath, { widgetName, permissions: parsedPermissions, propertyMenuCode, importUsePropertyMenu })
+    await replaceTemplatizedValues(directoryPath, { widgetName, widgetId: randomWidgetId() })
 
     console.log('Installing dependencies...')
     await installDependencies(directoryPath, destinationPath)
