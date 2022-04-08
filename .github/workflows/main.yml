@@ -19,7 +19,6 @@ jobs:
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
-
-      - name: Run tests
-        run: npm run test:with-ui |
-          npm run test:without-ui
+      - name: prettier
+        run: npm run format:check
+      - run: ./test-usage.sh

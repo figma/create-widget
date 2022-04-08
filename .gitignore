@@ -20,4 +20,6 @@ scopes
 .DS_Store
 
 test/
+test-artifacts/
 templates/*/package-lock.json
+

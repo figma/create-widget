@@ -16,7 +16,7 @@ See the generated README.md for more information on how to use this template and
 
 You can find the API reference for widgets here: https://www.figma.com/widget-docs/api/api-reference/
 
-Press ^C at any time to quit.\n`
+Press ^C at any time to quit.\n`;
 
 function makeid(length) {
   var result = "";
@@ -141,8 +141,9 @@ export async function createWidget(input) {
           type: "list",
         },
       ]);
-      shouldAddUI = result.shouldAddIframe === "Y";
+      shouldAddUI = result.shouldAddIframe;
     }
+    shouldAddUI = shouldAddUI === "Y";
 
     console.log(``);
     console.log(`Creating widget ${shouldAddUI ? "with ui" : "without ui"}...`);
