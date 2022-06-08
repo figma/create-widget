@@ -12,15 +12,10 @@
   },
   "author": "Figma",
   "license": "MIT License",
-  "dependencies": {
-    "react": "^17.0.0",
-    "react-dom": "^17.0.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@figma/plugin-typings": "*",
     "@figma/widget-typings": "*",
-    "@types/react": "^17.0.0",
-    "@types/react-dom": "^17.0.0",
     "concurrently": "^6.3.0",
     "esbuild": "^0.13.5",
     "prettier": "^2.3.2",
