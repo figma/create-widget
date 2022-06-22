@@ -9,7 +9,7 @@ const description = `
   Examples
     $ npm init @figma/widget
     $ npm init @figma/widget -n Counter
-    $ npm init @figma/widget -n Counter -p counter-widget --iframe=Y
+    $ npm init @figma/widget -n Counter -p counter-widget --iframe=Y --editor-type figma,figjam
 `;
 
 sade("create-widget", true)
