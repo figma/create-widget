@@ -132,7 +132,7 @@ export async function createWidget(input) {
     }
 
     let rawEditorType = input.options["editor-type"];
-    let editorType
+    let editorType;
     if (rawEditorType === undefined) {
       const result = await inquirer.prompt([
         {
@@ -142,9 +142,12 @@ export async function createWidget(input) {
           type: "list",
         },
       ]);
-      rawEditorType = result.editorType || "figjam"
-      editorType = rawEditorType.split(",").map(e => `\"${e}\"`).join(",")
-      console.log(editorType)
+      rawEditorType = result.editorType || "figjam";
+      editorType = rawEditorType
+        .split(",")
+        .map((e) => `\"${e}\"`)
+        .join(",");
+      console.log(editorType);
     }
 
     let shouldAddUI = input.options.iframe;
@@ -162,7 +165,11 @@ export async function createWidget(input) {
     shouldAddUI = shouldAddUI === "Y";
 
     console.log(``);
-    console.log(`Creating widget for ${rawEditorType} ${shouldAddUI ? "with ui" : "without ui"}...`);
+    console.log(
+      `Creating widget for ${rawEditorType} ${
+        shouldAddUI ? "with ui" : "without ui"
+      }...`
+    );
     console.log(`Copying template into "${destinationPath}"...`);
 
     await copyTemplateFiles(directoryPath, shouldAddUI);
