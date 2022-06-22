@@ -19,6 +19,10 @@ sade("create-widget", true)
     "-p, --package-name",
     'Name of the folder containing your widget; defaults to "<name>-widget"'
   )
+  .option(
+    "-e, --editor-type",
+    'Editor type of widget; enter [figma | figjam | figma,figjam]; defaults to "figjam"'
+  )
   .option("-i, --iframe", "Whether the widget uses an iframe")
   .action(async function (options) {
     await createWidget({ options });

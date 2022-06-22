@@ -2,7 +2,7 @@
   "name": "{{widgetName}}",
   "id": "{{widgetId}}",
   "api": "1.0.0",
-  "editorType": ["figjam"],
+  "editorType": [{{{widgetEditorType}}}],
   "permissions": [],
   "containsWidget": true,
   "main": "dist/code.js",
