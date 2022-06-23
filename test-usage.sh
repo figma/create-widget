@@ -7,7 +7,7 @@ mkdir -p test-artifacts
 pushd test-artifacts
 
 # Without iframe
-node ../cli -n CounterNoUI -p counter-no-ui-widget --iframe=N
+node ../cli -n CounterNoUI -p counter-no-ui-widget --iframe=N --editortype --editor-type figma,figjam
 pushd counter-no-ui-widget
 
 if [ -d "ui-src/" ]; then
@@ -19,7 +19,7 @@ npm run test
 popd
 
 # With iframe
-node ../cli -n CounterWithUI -p counter-with-ui-widget --iframe=Y
+node ../cli -n CounterWithUI -p counter-with-ui-widget --iframe=Y --editor-type figjam
 pushd counter-with-ui-widget
 npm run test
 popd

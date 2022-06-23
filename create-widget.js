@@ -131,6 +131,25 @@ export async function createWidget(input) {
       );
     }
 
+    let rawEditorType = input.options["editor-type"];
+    let editorType;
+    if (rawEditorType === undefined) {
+      const result = await inquirer.prompt([
+        {
+          choices: ["figma", "figjam", "figma,figjam"],
+          message: `Select the editor type(s) name for your widget:")`,
+          name: "editorType",
+          type: "list",
+        },
+      ]);
+      rawEditorType = result.editorType || "figjam";
+      editorType = rawEditorType
+        .split(",")
+        .map((e) => `\"${e}\"`)
+        .join(",");
+      console.log(editorType);
+    }
+
     let shouldAddUI = input.options.iframe;
     if (shouldAddUI === undefined) {
       const result = await inquirer.prompt([
@@ -146,13 +165,18 @@ export async function createWidget(input) {
     shouldAddUI = shouldAddUI === "Y";
 
     console.log(``);
-    console.log(`Creating widget ${shouldAddUI ? "with ui" : "without ui"}...`);
+    console.log(
+      `Creating widget for ${rawEditorType} ${
+        shouldAddUI ? "with ui" : "without ui"
+      }...`
+    );
     console.log(`Copying template into "${destinationPath}"...`);
 
     await copyTemplateFiles(directoryPath, shouldAddUI);
     await replaceTemplatizedValues(directoryPath, {
       widgetName,
       widgetId: randomWidgetId(),
+      widgetEditorType: editorType,
       packageName: widgetName.toLowerCase(),
     });
 
