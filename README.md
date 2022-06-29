@@ -2,7 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/@figma/create-widget?logo=npm&cacheSeconds=1800)](https://www.npmjs.com/package/@figma/create-widget)
 
-Create new [FigJam widgets](https://figma.com/widget-docs) with a single command.
+Create new [Figma & FigJam widgets](https://figma.com/widget-docs) with a single command.
 
 ```bash
 npm init @figma/widget
