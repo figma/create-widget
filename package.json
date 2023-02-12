@@ -16,7 +16,7 @@
   "license": "MIT License",
   "dependencies": {
     "fs-extra": "^10.0.0",
-    "package-json": "^7.0.0",
+    "package-json": "^8.1.0",
     "url": "^0.11.0",
     "inquirer": "^8.2.0",
     "sade": "^1.7.4",
