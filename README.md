@@ -45,3 +45,5 @@ This runs typechecking and makes sure that your widget builds without errors.
 ## Credit
 
 Credit to https://github.com/yuanqing/create-figma-plugin for providing a way to `npm init` widgets and plugins before this repository ever existed.
+
+new text here.
